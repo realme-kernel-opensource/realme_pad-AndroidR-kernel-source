@@ -1,0 +1,48 @@
+&i2c5 {
+	sgm41510@6b {
+		compatible = "mediatek,sgm41510";
+		reg = <0x6b>;
+		interrupt-parent = <&pio>;
+		interrupts = <20 IRQ_TYPE_EDGE_FALLING 20 0>;
+		pinctrl-names = "sgm41510_psel_low", "sgm41510_psel_high";
+		pinctrl-0 = <&sgm41510_psel_low>;
+		pinctrl-1 = <&sgm41510_psel_high>;
+		mtk,sgm41510_psel_gpio = <&pio 15 0x00>;
+		mtk,sgm41510_otgen_gpio = <&pio 42 0x00>;
+
+		/* required properties */
+		sgm,charge-current = <2048>;
+		sgm,battery-regulation-voltage = <4208>;
+		sgm,termination-current = <128>;
+		sgm,precharge-current = <128>;
+		sgm,minimum-sys-voltage = <3500>;
+		sgm,boost-voltage = <4998>;
+		sgm,boost-max-current = <1200>;
+
+		/* optional properties */
+		sgm,thermal-regulation-threshold = <3>;
+
+		charger_name = "primary_chg";
+		status = "okay";
+		};
+	};
+
+&pio {
+	sgm41510_psel_low: sgm41510_psel_low {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+
+	sgm41510_psel_high: sgm41510_psel_high {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+};

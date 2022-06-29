@@ -1,0 +1,12 @@
+#
+# Input sar senaor device configuration
+#
+
+config INPUT_SAR_SENSOR
+    bool "input sar sensor"
+	depends on INPUT
+	---help---
+	  Set Y here and a list of supported sar sensor will be displayed;
+	  
+source "drivers/input/sar/AW9610X/Kconfig"
+

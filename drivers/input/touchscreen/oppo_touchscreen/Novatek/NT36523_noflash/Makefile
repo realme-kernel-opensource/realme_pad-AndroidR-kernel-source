@@ -1,0 +1,15 @@
+#
+# Makefile for the touchscreen drivers.
+#
+ifeq ($(CONFIG_TRUSTONIC_TEE_SUPPORT),y)
+subdir-ccflags-y += -I$(srctree)/drivers/spi
+endif
+
+ifeq ($(CONFIG_TRUSTONIC_TEE_SUPPORT),y)
+	include $(srctree)/drivers/misc/mediatek/gud/Makefile.include
+endif
+subdir-ccflags-y += -I$(srctree)/drivers/spi
+
+# Each configuration option enables a list of files.
+obj-$(CONFIG_TOUCHPANEL_NOVA_NT36523_NOFLASH) += nvt_drivers_nt36523_noflash.o
+#endif

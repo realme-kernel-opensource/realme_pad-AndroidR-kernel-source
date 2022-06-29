@@ -1,0 +1,449 @@
+/*
+ * Copyright (C) 2019 MediaTek Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See http://www.gnu.org/licenses/gpl-2.0.html for more details.
+ */
+
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/pinctrl/mt6768-pinfunc.h>
+
+&reserved_memory {
+	reserve-memory-scp_share {
+		compatible = "mediatek,reserve-memory-scp_share";
+		no-map;
+		size = <0 0x00d00000>;
+		alignment = <0 0x1000000>;
+		alloc-ranges = <0 0x40000000 0 0x50000000>;
+	};
+};
+
+/* chosen */
+&chosen {
+
+	atag,videolfb-fb_base_l = <0x7e605000>;
+	atag,videolfb-fb_base_h = <0x0>;
+	atag,videolfb-islcmfound = <1>;
+	atag,videolfb-islcm_inited = <0>;
+	atag,videolfb-fps= <6000>;
+	atag,videolfb-vramSize= <0x017e8000>;
+	atag,videolfb-lcmname=
+		"hx83112b_fhdp_dsi_cmd_auo_rt5081_drv";
+};
+
+&odm {
+	led0:led@0 {
+		compatible = "mediatek,red";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led1:led@1 {
+		compatible = "mediatek,green";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led2:led@2 {
+		compatible = "mediatek,blue";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led3:led@3 {
+		compatible = "mediatek,jogball-backlight";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led4:led@4 {
+		compatible = "mediatek,keyboard-backlight";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led5:led@5 {
+		compatible = "mediatek,button-backlight";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led6:led@6 {
+		compatible = "mediatek,lcd-backlight";
+		led_mode = <4>;
+		data = <1>;
+		pwm_config = <0 3 0 0 0>;
+	};
+	vibrator0:vibrator@0 {
+		compatible = "mediatek,vibrator";
+		vib_timer = <25>;
+		vib_limit = <9>;
+		vib_vol= <9>;
+	};
+	panel1: panel@1 {
+				compatible = "nt,nt36523b";
+				gpio_lcd_rst = <&pio 45 0>;
+				gpio_lcd_bl_en = <&pio 34 0>;
+				gpio_lcd_bias_enp = <&pio 33 0>;
+				gpio_lcd_bias_enn = <&pio 35 0>;
+				gpio_lcd_1v8 = <&pio 107 0>;
+				status = "okay";
+    };
+	panel2: panel@2 {
+				compatible = "hx,hx83102";
+				gpio_lcd_rst = <&pio 45 0>;
+				gpio_lcd_bl_en = <&pio 34 0>;
+				gpio_lcd_bias_enp = <&pio 33 0>;
+				gpio_lcd_bias_enn = <&pio 35 0>;
+				gpio_lcd_1v8 = <&pio 107 0>;
+				status = "okay";
+    };
+/*Kun.Wang@BSP.Kernel.Debug, 2019/10/09, Add for oppo project & devinfo*/
+	oplus_project:oplus_project {
+		compatible = "oppo,oplus_project";
+	};
+	oppo_devinfo:oppo_devinfo {
+		compatible = "oppo-devinfo";
+	};
+	swtp: swtp {
+		compatible = "mediatek, swtp-eint";
+	};
+
+	ant_check {
+		compatible = "longcheer,ant_check";
+		ant_check_gpio = <&pio 1 0x0>;
+	};
+};
+
+&i2c2 {
+	clock-frequency = <400000>;
+
+	mtk-usb@60 {
+		compatible = "mediatek,mtk-usb";
+		reg = <0x60>;
+		status = "okay";
+	};
+};
+
+/* smartpa info*/
+&smartpainfo {
+		compatible = "mediatek,smartpainfo";
+		smartpa_num = <4>;
+	};
+
+&i2c6 {
+	
+/* AWINIC AW881XX Smart PA */
+	aw881xx_smartpa@34 {
+		compatible = "awinic,aw881xx_smartpa";
+		reg = <0x34>;
+		reset-gpio = <&pio 13 0>;
+		/* irq-gpio = <&pio 5 0>; */
+		sound-channel = <1>;
+		fade-enable = <0>;
+		pa-syn-enable = <0>;
+		spin_data = "L R R L";
+		status = "okay";
+		};
+
+	aw881xx_smartpa@35 {
+		compatible = "awinic,aw881xx_smartpa";
+		reg = <0x35>;
+		reset-gpio = <&pio 13 0>;
+		sound-channel = <0>;
+		fade-enable = <0>;
+		pa-syn-enable = <0>;
+		spin_data = "L R R L";
+		status = "okay";
+		};
+
+	aw881xx_smartpa@36 {
+		compatible = "awinic,aw881xx_smartpa";
+		reg = <0x36>;
+		reset-gpio = <&pio 13 0>;
+		sound-channel = <2>;
+		fade-enable = <0>;
+		pa-syn-enable = <0>;
+		spin_data = "R L L R";
+		status = "okay";
+		};
+
+	aw881xx_smartpa@37 {
+		compatible = "awinic,aw881xx_smartpa";
+		reg = <0x37>;
+		reset-gpio = <&pio 13 0>;
+		sound-channel = <3>;
+		fade-enable = <0>;
+		pa-syn-enable = <0>;
+		spin_data = "R L L R";
+		status = "okay";
+		};
+	/* AWINIC AW881XX Smart PA end*/
+/* AWINIC AW883XX Smart PA */
+	aw883xx_smartpa@38 {
+		compatible = "awinic,aw883xx_smartpa";
+		reg = <0x38>;
+		reset-gpio = <&pio 13 0>;
+		/* irq-gpio = <&pio 5 0>; */
+		sound-channel = <1>;
+		re-min = <1000>;
+        re-max = <40000>;
+		sync_flag = <0>;
+        aw-cali-mode = "aw_attr";
+		fade-enable = <0>;
+		pa-syn-enable = <0>;
+		spin-mode = "reg_spin";
+		spin-data = "l r r l";
+		status = "okay";
+		};
+
+	aw883xx_smartpa@39 {
+		compatible = "awinic,aw883xx_smartpa";
+		reg = <0x39>;
+		reset-gpio = <&pio 13 0>;
+		sound-channel = <0>;
+		re-min = <1000>;
+        re-max = <40000>;
+        aw-cali-mode = "aw_attr";
+		fade-enable = <0>;
+		sync_flag = <0>;
+		pa-syn-enable = <0>;
+		spin-mode = "reg_spin";
+		spin-data = "l r r l";
+		status = "okay";
+		};
+
+	aw883xx_smartpa@40 {
+		compatible = "awinic,aw883xx_smartpa";
+		reg = <0x40>;
+		reset-gpio = <&pio 13 0>;
+		sound-channel = <2>;
+		re-min = <1000>;
+        re-max = <40000>;
+        aw-cali-mode = "aw_attr";
+		fade-enable = <0>;
+		pa-syn-enable = <0>;
+		sync_flag = <0>;
+		spin-mode = "reg_spin";
+		spin-data = "r l l r";
+		status = "okay";
+		};
+
+	aw883xx_smartpa@41 {
+		compatible = "awinic,aw883xx_smartpa";
+		reg = <0x41>;
+		reset-gpio = <&pio 13 0>;
+		sound-channel = <3>;
+		re-min = <1000>;
+        re-max = <40000>;
+        aw-cali-mode = "aw_attr";
+		fade-enable = <0>;
+		pa-syn-enable = <0>;
+		sync_flag = <0>;
+		spin-mode = "reg_spin";
+		spin-data = "r l l r";
+		status = "okay";
+		};
+	/* AWINIC AW883XX Smart PA end*/
+
+	fs16xx@44 {
+		compatible = "foursemi,fs16xx";
+		reg = <0x44>;
+		status = "okay";
+	};
+
+	fs16xx@45 {
+		compatible = "foursemi,fs16xx";
+		reg = <0x45>;
+		status = "okay";
+	};
+
+	fs16xx@46 {
+		compatible = "foursemi,fs16xx";
+		reg = <0x46>;
+		status = "okay";
+	};
+
+	fs16xx@47 {
+		compatible = "foursemi,fs16xx";
+		reg = <0x47>;
+		status = "okay";
+	};
+
+};
+
+&i2c7 {
+        i2c_lcd_bias@3e {
+            compatibel = "mediatek,i2c_lcd_bias";
+            reg = <0x3E>;
+			status = "okay";
+        };
+        sgm_bl@36 {
+			compatible = "mediatek,sgm_bl";
+			reg = <0x36>;
+			sgm37604a,hwen-gpio = <&pio 34 0>;
+			/* brightness map level 1:256,2:1024,3:2048 */
+			sgm,bl-map = <3>;
+			sgm,using-lsb;
+			sgm,ovp-level = <2>; /* 31V */
+			sgm,ocp-level = <1>; /* 1.8A */
+			sgm,switch-freq = <1>; /* 1000kHz(default) */
+			sgm,auto-freq-high = <0x10>;
+			sgm,auto-freq-low = <0x05>;
+			sgm,bl-fscal-led = <0x10>; /* 17.5mA */
+			sgm,bl-channel = <4>;
+			sgm,turn-on-ramp = <0x09>; /* 256ms */
+			sgm,turn-off-ramp = <0x09>; /* 256ms */
+			sgm,pwm-trans-dim = <0>; /* 2ms */
+			sgm,i2c-trans-dim = <0x07>; /* 512ms */
+			sgm,pwm-mode = <0>; /* 0 pwm enable,1 PWM disable */
+			sgm,map-type = <1>; /* linear */
+			sgm,work-mode = <0>; /* backlight */
+			sgm,flash-timeout-time = <0x05>; /* 500ms(default) */
+			sh-current = <0x08>; /* 59.2mA(default) */
+			sgm,efuse-config = <0x1C 0x61 0x61 0x4C 0x2C 0xC0 0x08 0x00 0x01 0xC0 0x00 0x00 0x50>;
+
+			status = "okay";
+		};
+};
+/* accdet start */
+&accdet {
+	/* accdet micbias voltage: 0x07,2.7v;0x05,2.5v;0x02,1.9v */
+	accdet-mic-vol = <7>;
+	headset-mode-setting = <0x500 0x500 1 0x1f0 0x800 0x800 0x20 0x44>;
+	accdet-plugout-debounce = <1>;
+	/*1:ACC mode, 2:low cost without in bias, 6:low cost with in bias*/
+	accdet-mic-mode = <1>;
+	/* eint_level_trigger: 8,LEVEL_LOW(DEF) ;4,LV_HIGH;others,LV_LOW */
+	headset-eint-level-pol = <8>;
+	/*0--MD_MAX--UP_MAX--DW_MAX*/
+	headset-three-key-threshold = <0 80 220 400>;
+	headset-three-key-threshold-CDD = <0 121 192 600>;
+	/*0--MD_MAX--VOICE_MAX--UP_MAX--DW_MAX*/
+	headset-four-key-threshold = <0 58 121 192 400>;
+	status = "okay";
+};
+/* accdet end */
+
+/* CONSYS GPIO standardization */
+&pio {
+	consys_pins_default: consys_default {
+	};
+	gpslna_pins_init: gpslna@0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO91__FUNC_GPIO91>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+	gpslna_pins_oh: gpslna@1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO91__FUNC_GPIO91>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	gpslna_pins_ol: gpslna@2 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO91__FUNC_GPIO91>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+};
+&consys {
+	pinctrl-names = "default", "gps_lna_state_init",
+		"gps_lna_state_oh", "gps_lna_state_ol";
+	pinctrl-0 = <&consys_pins_default>;
+	pinctrl-1 = <&gpslna_pins_init>;
+	pinctrl-2 = <&gpslna_pins_oh>;
+	pinctrl-3 = <&gpslna_pins_ol>;
+	status = "okay";
+};
+/* CONSYS end */
+
+/* IRTX GPIO Start */
+&irtx_pwm {
+	pinctrl-names = "irtx_gpio_led_default", "irtx_gpio_led_set";
+	pinctrl-0 = <&irtx_gpio_led_default>;
+	pinctrl-1 = <&irtx_gpio_led_set>;
+	status = "okay";
+};
+&pio {
+	/* IRTX GPIO Settings -Start */
+	/* default: GPIO0, output, high */
+	irtx_gpio_led_default:irtx_gpio_led_def@gpio12 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO12__FUNC_GPIO12>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	irtx_gpio_led_set:irtx_gpio_led_set@gpio12 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO12__FUNC_PWM0>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+}; /* IRTX GPIO Settings -End */
+
+/* DISPSYS GPIO standardization */
+&pio {
+	mtkfb_pins_lcm_rst_out1_gpio: lcm_rst_out1_gpio {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	mtkfb_pins_lcm_rst_out0_gpio: lcm_rst_out0_gpio {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	mtkfb_pins_lcm_dsi_te: lcm_dsi_te {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO44__FUNC_DSI_TE>;
+		};
+	};
+};
+
+&mtkfb {
+	pinctrl-names =
+		"lcm_rst_out1_gpio", "lcm_rst_out0_gpio",
+		"mode_te_te";
+	pinctrl-0 = <&mtkfb_pins_lcm_rst_out1_gpio>;
+	pinctrl-1 = <&mtkfb_pins_lcm_rst_out0_gpio>;
+	pinctrl-2 = <&mtkfb_pins_lcm_dsi_te>;
+	status = "okay";
+};
+
+/* DISPSYS GPIO standardization end*/
+
+#include <oppo8786/cust.dtsi>
+#include "mediatek/cust_mt6768_camera.dtsi"
+#include "mediatek/cust_mt6768_hall.dtsi"
+#include "mediatek/cust_mt6768_touch_1080x2160.dtsi"
+#include "mediatek/novatek-nt36xxx-spi.dtsi"
+#include "mediatek/cust_mt6768_sar.dtsi"
+#include "mediatek/sgm4151x.dtsi"
+#include "mediatek/z350.dtsi"
+/*End of this file, DO NOT ADD ANYTHING HERE*/

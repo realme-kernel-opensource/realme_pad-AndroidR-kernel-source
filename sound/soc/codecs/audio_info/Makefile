@@ -1,0 +1,1 @@
+obj-$(CONFIG_SND_SOC_SMARTPAINFO)	+= smartpa-info.o

@@ -1,0 +1,13 @@
+&i2c3 {
+	status = "okay";
+	aw9610x_sar@12 {
+		compatible = "awinic,aw9610x_sar_0";
+		reg = <0x12>;
+		irq-gpio = <&pio 32 0>;
+		aw9610x,using-firmware;
+		sar-num = < 0 >;
+		//vcc-supply = <&pm8953_l6>;
+		channel-func = <0x6>;//1: detection channel; 0: not detection channel;
+		status = "okay";
+	};
+};

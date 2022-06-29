@@ -1,0 +1,9 @@
+#ifdef OPLUS_FEATURE_TP_BASIC
+# Bin.Li@EXP.BSP.bootloader.bootflow, 2017/05/15, Add for config oppo software common soft
+config OPPO_ARCH_FILE
+    bool "for build directory oppo"
+    ---help---
+    say Y to buid in
+source "drivers/soc/oppo/oppo_devinfo/Kconfig"
+
+#endif /* OPLUS_FEATURE_MEMLEAK_DETECT */

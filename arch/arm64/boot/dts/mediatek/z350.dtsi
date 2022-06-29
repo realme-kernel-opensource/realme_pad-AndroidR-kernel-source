@@ -1,0 +1,70 @@
+&i2c7 {
+	clock-frequency = <100000>;
+	wt6670f_charger@37 {
+		compatible = "mediatek,wt6670f_charger";
+		reg = <0x37>;
+		interrupt-parent = <&pio>;
+		interrupts = <5 IRQ_TYPE_EDGE_FALLING 5 0>;
+		pinctrl-names = "qc_normal", "qc_isp";
+		pinctrl-0 = <&qc_sda_normal &qc_scl_normal>;
+		pinctrl-1 = <&qc_sda_isp &qc_scl_isp>;
+		mtk,qc_rst_gpio = <&pio 0 0x00>;
+		mtk,qc_sda_gpio = <&pio 176 0x00>;
+		mtk,qc_scl_gpio = <&pio 175 0x00>;
+
+		alias_name  = "wt6670f";
+		en_intb;
+		en_sleep;
+	};
+
+	z350_charger@35 {
+		compatible = "mediatek,z350_charger";
+		reg = <0x35>;
+		interrupt-parent = <&pio>;
+		interrupts = <5 IRQ_TYPE_EDGE_FALLING 5 0>;
+		mtk,qc_rst_gpio = <&pio 0 0x00>;
+
+		alias_name  = "z350";
+		en_intb;
+		en_sleep;
+	};
+};
+
+&pio {
+	/* z350 */
+	qc_sda_normal: qc_sda_normal {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO176__FUNC_SDA7>;
+			slew-rate = <0>;
+			bias-pull-up;
+			input-enable;
+		};
+	};
+
+	qc_sda_isp: qc_sda_isp {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO176__FUNC_GPIO176>;
+			slew-rate = <1>;
+			//bias-disable;
+			//output-low;
+		};
+	};
+
+	qc_scl_normal: qc_scl_normal {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO175__FUNC_SCL7>;
+			slew-rate = <0>;
+			bias-pull-up;
+			input-enable;
+		};
+	};
+
+	qc_scl_isp: qc_scl_isp {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO175__FUNC_GPIO175>;
+			slew-rate = <1>;
+			//bias-disable;
+			//output-low;
+		};
+	};
+};
